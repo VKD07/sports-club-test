@@ -1,0 +1,304 @@
+.nui-input-wrapper .nui-input-icon {
+  z-index: 1 !important;
+}
+
+.nui-button-group .nui-input-wrapper:first-child .nui-input:focus {
+  z-index: 0 !important;
+}
+
+.sa-group-search .nui-listbox-button {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: 0 !important;
+}
+
+.nui-autocomplete-label,
+.nui-listbox-label,
+.nui-input-label,
+p.nui-text,
+.nui-label,
+.nui-textarea-label {
+  @apply !text-muted-600 dark:!text-muted-400;
+}
+
+.close-btn {
+  position: absolute;
+  right: 46px;
+  z-index: 9;
+  top: 8px;
+  width: 25px;
+  height: 25px;
+  padding: 6px;
+}
+
+.close-btn-auto {
+  position: absolute;
+  right: 15px;
+  z-index: 9;
+  top: 16px;
+  width: 25px;
+  height: 25px;
+  padding: 6px;
+}
+
+.custom-error-msg {
+  margin-top: 0.25rem;
+  display: block;
+  font-family:
+    Inter Variable,
+    sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1;
+  --tw-text-opacity: 1;
+  color: rgb(225 29 72 / 1);
+  color: rgb(225 29 72 / var(--tw-text-opacity));
+}
+
+.status-tab {
+  --tw-bg-opacity: 1 !important;
+  --tw-text-opacity: 1 !important;
+  color: #fff !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.65rem;
+  border-radius: 9999px;
+  border-width: 0px !important;
+}
+
+.tag-resolved {
+  background-color: #14b8a6 !important;
+}
+
+.tag-in-progress {
+  background-color: #0ea5e9 !important;
+}
+
+.tag-pending {
+  background-color: #f59e0b !important;
+}
+
+.tag-opened {
+  background-color: #f43f5e !important;
+}
+
+.tag-closed {
+  background-color: #6c757d !important;
+}
+
+.is_disabled {
+  cursor: not-allowed !important;
+}
+
+.error-border .nui-autocomplete-input {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(244 63 94 / var(--tw-border-opacity)) !important;
+}
+
+.add-dropdown .nui-menu-content a {
+  @apply rounded  hover:bg-primary-500;
+}
+
+.add-dropdown .nui-menu-content a .nui-item-content > div {
+  @apply font-normal text-sm;
+}
+
+.add-dropdown .nui-menu-content a:hover .nui-item-content > div {
+  @apply text-white;
+}
+
+.add-dropdown.small-dropdown .nui-dropdown-menu.nui-menu-rounded {
+  @apply !w-32;
+}
+
+.tab-number .nui-tabs-inner .nui-has-icon {
+  @apply flex-row-reverse !gap-2;
+}
+
+.tab-number .nui-tabs-inner .nui-has-icon .icon {
+  @apply border bg-primary-400 text-white !text-xs px-2 py-1 !w-auto !h-auto rounded-full;
+}
+
+/* COLOR DROPDOWN */
+
+.color-dropdown .nui-listbox-button {
+  @apply !bg-primary-500 !text-white !border-none !text-base !ps-4 !py-4;
+}
+
+.color-dropdown .nui-listbox-button-inner .icon {
+  @apply !w-5 !h-5;
+}
+
+.color-dropdown .nui-listbox-chevron {
+  @apply !border-none;
+}
+
+.color-dropdown .nui-listbox-chevron .nui-listbox-chevron-inner {
+  @apply !text-white;
+}
+
+.tab-button {
+  @apply border-none !px-6 !py-5 !text-base !rounded-lg;
+}
+
+.tab-button.nui-button-default {
+  @apply !bg-primary-50 !text-primary-500;
+}
+
+.nui-checkbox .nui-checkbox-input:checked ~ .nui-checkbox-inner {
+  @apply bg-primary-500;
+}
+
+.nui-checkbox .nui-checkbox-input:checked ~ .nui-icon-check {
+  @apply !text-white;
+}
+
+.performance-table div > div:last-child {
+  @apply !gap-y-2;
+}
+
+/* PROSE */
+
+.prose-light {
+  @apply max-w-full prose-strong:text-primary-500 prose-strong:dark:text-primary-200 marker:text-primary-500 prose-li:text-sm prose-li:dark:text-muted-300 prose-p:text-sm prose-p:dark:text-muted-300 prose-headings:text-primary-600 prose-headings:dark:text-primary-300;
+}
+
+.prose-post {
+  @apply max-w-full prose-strong:text-primary-500 marker:text-primary-500 prose-li:text-sm prose-li:dark:text-muted-300 prose-p:text-sm prose-p:dark:text-muted-300;
+}
+
+.breadcrumb-light .nui-item-inner {
+  @apply !text-white hover:!text-muted-200;
+}
+
+.breadcrumb-light .nui-item-text {
+  @apply !text-white;
+}
+
+.dot-loading span {
+  animation-name: blink;
+
+  animation-duration: 1.4s;
+
+  animation-iteration-count: infinite;
+
+  animation-fill-mode: both;
+}
+
+.sot-loading span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot-loading span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.dot-loading span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.dot-loading span:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+/* SPINNER */
+.lds-spinner,
+.lds-spinner div,
+.lds-spinner div:after {
+  box-sizing: border-box;
+}
+.lds-spinner {
+  color: #520f93;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 3.2px;
+  left: 36.8px;
+  width: 6.4px;
+  height: 17.6px;
+  border-radius: 25%;
+  background: currentColor;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.avatar-contain .nui-avatar-inner img {
+  object-fit: contain !important;
+}

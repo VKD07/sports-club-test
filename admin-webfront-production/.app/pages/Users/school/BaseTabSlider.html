@@ -1,0 +1,731 @@
+<BaseTabSlider
+          v-slot="{ activeValue }"
+          model-value="profile"
+          :tabs="[
+            { label: 'Profile', value: 'profile' },
+            { label: 'Permission', value: 'permission' },
+          ]"
+          @update:model-value="handleTabChange"
+        >
+          <div v-if="activeValue === 'profile'" class="relative">
+            <BaseButton class="w-24 absolute top-8 right-8" @click="resetForm">Reset</BaseButton>
+            <form method="POST" action="" class="w-full pb-16" @submit.prevent="onSubmit">
+              <div class="flex items-center justify-between py-4">
+                <div>
+                  <BaseHeading tag="h2" size="md" weight="medium" lead="normal" class="uppercase tracking-wider text-primary-500 dark:text-muted-100">
+                    User Profile
+                  </BaseHeading>
+
+                  <BaseText size="sm" class="text-muted-600 dark:text-muted-400"> Customize user access and permissions for each segment </BaseText>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <div class="pe-8 flex-1">
+                  <div class="max-w-2xl space-y-12 py-8">
+                    <BaseMessage v-if="success" @close="success = false"> User profile has been updated! </BaseMessage>
+
+                    <BaseMessage v-if="fieldsWithErrors" type="danger" @close="() => setErrors({})">
+                      This form has {{ fieldsWithErrors }} errors, please check them before submitting
+                    </BaseMessage>
+
+                    <TairoFormGroup label="Personal details" sublabel="Others deserve to know you more">
+                      <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-12 sm:col-span-6">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="firstName">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              type="text"
+                              icon="ph:user"
+                              label="First Name"
+                              placeholder="First Name"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12 sm:col-span-6">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="lastName">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              type="text"
+                              icon="ph:user"
+                              label="Last Name"
+                              placeholder="Last Name"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12 sm:col-span-6">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="email">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              disabled
+                              type="email"
+                              icon="mdi-light:email"
+                              label="Official Email"
+                              placeholder="Official email"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12 sm:col-span-6">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="phone">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              type="tel"
+                              icon="mdi-light:phone"
+                              label="Phone Number"
+                              placeholder="Phone number"
+                              :classes="{
+                                label: '!text-muted-700 dark:!text-muted-400',
+                              }"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+                      </div>
+                    </TairoFormGroup>
+
+                    <TairoFormGroup label="Professional details" sublabel="Others deserve to know you more">
+                      <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-12">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="designation">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              type="text"
+                              icon="ph:suitcase-simple-light"
+                              label="Designation"
+                              placeholder="Designation"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="organization">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              disabled
+                              type="text"
+                              icon="octicon:organization-24"
+                              label="Organization"
+                              placeholder="Organization"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="location">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              disabled
+                              type="text"
+                              label="Location"
+                              placeholder="Organization"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+
+                        <div class="col-span-12">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="role">
+                            <BaseListbox
+                              label="User Role"
+                              :items="userRole"
+                              placeholder="Select a user role"
+                              label-style="!text-blue-500"
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+                      </div>
+
+                      <div class="col-span-12">
+                        <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="picture">
+                          <BaseInput
+                            :model-value="field.value"
+                            :error="errorMessage"
+                            :disabled="isSubmitting"
+                            type="hidden"
+                            autocomplete="off"
+                            @update:model-value="handleChange"
+                            @blur="handleBlur"
+                          />
+                        </Field>
+                      </div>
+                    </TairoFormGroup>
+
+                    <TairoFormGroup label="Additional details" sublabel="Others deserve to know you more">
+                      <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-12">
+                          <Field v-slot="{ field, errorMessage, handleChange, handleBlur }" name="whatsappNumber">
+                            <BaseInput
+                              :model-value="field.value"
+                              :error="errorMessage"
+                              :disabled="isSubmitting"
+                              type="tel"
+                              icon="ph:whatsapp-logo-light"
+                              label="Whatsapp number"
+                              placeholder="Whatsapp number"
+                              @update:model-value="handleChange"
+                              @blur="handleBlur"
+                            />
+                          </Field>
+                        </div>
+                      </div>
+                    </TairoFormGroup>
+                  </div>
+
+                  <div class="flex items-center gap-2 pt-8 pb-12">
+                    <BaseButton class="w-24" to="/users">Cancel</BaseButton>
+                    <BaseButton type="submit" color="primary" class="w-24" :disabled="isSubmitting" :loading="isSubmitting">Update</BaseButton>
+                  </div>
+                </div>
+
+                <div
+                  class="hidden xl:flex h-full flex-col bg-primary-600 dark:bg-muted-900 drop-shadow-md p-6 py-12 rounded-md mx-8 2xl:mx-auto w-full max-w-sm !mr-8 mt-[-240px]"
+                >
+                  <!-- user avatar  -->
+                  <TairoFormGroup>
+                    <div class="relative flex flex-col items-center justify-center gap-4">
+                      <div class="relative h-24 w-24">
+                        <img
+                          v-if="values.picture"
+                          :src="values.picture"
+                          alt="Avatar"
+                          class="bg-muted-200 dark:bg-muted-700/60 h-24 w-24 rounded-full object-cover object-center"
+                        />
+
+                        <div
+                          v-else
+                          class="relative bg-primary-500 text-muted-100 dark:bg-muted-700/60 h-24 w-24 p-6 rounded-full object-cover object-center flex items-center justify-center text-4xl nui-weight-bold"
+                        >
+                          <span>{{ adminAvatar }}</span>
+                        </div>
+
+                        <div class="absolute bottom-0 end-0 z-20">
+                          <div class="relative" data-nui-tooltip="Change Avatar">
+                            <BaseButtonIcon size="sm" shape="full" @click="openAvatarModal">
+                              <Icon name="lucide:plus" class="h-4 w-4" />
+                            </BaseButtonIcon>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-white text-sm">User ID: {{ selectedUser?.user_id }}</div>
+                    </div>
+                  </TairoFormGroup>
+
+                  <div class="my-4 flex items-center">
+                    <div class="flex-1">
+                      <BaseHeading as="h3" size="lg" weight="medium" lead="relaxed" class="text-white">
+                        <span>
+                          {{ values.firstName ? values.firstName : 'first name' }}
+                          {{ values.lastName ? values.lastName : 'last name' }}
+                        </span>
+                      </BaseHeading>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 space-y-2 font-sans">
+                    <div class="flex items-end gap-2">
+                      <Icon name="mdi-light:email" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">{{ values.email ? values.email : 'user@email.com' }}</span>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                      <Icon name="mdi-light:phone" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">
+                        {{ values.phone ? values.phone : '+94 712345678' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="border-muted-200 dark:border-muted-700 mt-auto border-t pt-3 space-y-2">
+                    <div class="flex items-end gap-2">
+                      <Icon name="ph:suitcase-simple-light" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">
+                        {{ values.designation ? values.designation : 'Designation' }}
+                      </span>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                      <Icon name="octicon:organization-24" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">
+                        {{ values.organization ? values.organization : 'Organization' }}
+                      </span>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                      <Icon name="carbon:user-role" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">
+                        {{ values.role ? values.role : 'User role' }}
+                      </span>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                      <Icon name="ph:whatsapp-logo-light" class="text-muted-200 dark:text-muted-300 h-4 w-4" />
+                      <span class="text-muted-200 dark:text-muted-300 text-sm">
+                        {{ values.whatsappNumber ? values.whatsappNumber : '+44 123456789' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div v-else-if="activeValue === 'permission'" class="">
+            <form method="POST" action="" class="w-full pb-16" @submit.prevent="onSubmit">
+              <div class="flex items-center justify-between py-4">
+                <div>
+                  <BaseHeading tag="h2" size="md" weight="medium" lead="normal" class="uppercase tracking-wider text-primary-500 dark:text-muted-100">
+                    User role and access
+                  </BaseHeading>
+
+                  <BaseText size="sm" class="text-muted-600 dark:text-muted-400"> Customize user access and permissions for each segment </BaseText>
+                </div>
+              </div>
+
+              <div class="flex lg:items-center gap-4 md:gap-12 py-4 my-2 flex-col md:flex-row max-w-5xl">
+                <div class="flex gap-1 md:gap-4 items-start md:items-center w-full flex-col md:flex-row">
+                  <p>Active user role</p>
+                  <div class="flex-1 w-full">
+                    <BaseInput v-model="permission.activeUser" disabled />
+                  </div>
+                </div>
+
+                <div class="flex gap-1 md:gap-4 items-start md:items-center w-full flex-col md:flex-row">
+                  <p>Role Remark</p>
+                  <div class="flex-1 w-full">
+                    <BaseInput v-model="permission.roleRemark" placeholder="Type here" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between py-4">
+                <div>
+                  <BaseHeading tag="h2" size="sm" weight="medium" lead="normal" class="uppercase tracking-wider text-primary-500 dark:text-muted-100">
+                    Permissions table
+                  </BaseHeading>
+                </div>
+              </div>
+
+              <div>
+                <TairoTable rounded="none">
+                  <template #header>
+                    <TairoTableHeading uppercase class="p-4"> Permissions table </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> Create </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> View </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> Update </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> Approve </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> Delete </TairoTableHeading>
+                    <TairoTableHeading uppercase class="text-center w-24 px-2"> Export </TairoTableHeading>
+                  </template>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="p-4">
+                      <p class="!text-base !font-medium">Users</p>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> Add new user - admin </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> Add new user - school </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> Admin user view </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> School user view </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> All admin users </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> All school users </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="p-4">
+                      <p class="!text-base !font-medium">Schools</p>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> Add new school </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> View school profile </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+
+                  <TairoTableRow>
+                    <TairoTableCell class="ps-8 !text-base"> All schools </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+
+                    <TairoTableCell>
+                      <div class="flex items-center justify-center">
+                        <BaseCheckbox v-model="selected" rounded="none" />
+                      </div>
+                    </TairoTableCell>
+                  </TairoTableRow>
+                </TairoTable>
+              </div>
+
+              <div class="flex items-center gap-2 pt-12 pb-8">
+                <BaseButton class="w-24" to="/users">Reset</BaseButton>
+                <BaseButton type="submit" color="primary" class="w-24" :disabled="isSubmitting" :loading="isSubmitting"> Update </BaseButton>
+              </div>
+            </form>
+          </div>
+        </BaseTabSlider>

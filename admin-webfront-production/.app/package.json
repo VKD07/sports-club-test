@@ -1,0 +1,27 @@
+{
+  "name": "tairo-quickstarter",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.0.8",
+    "@fontsource-variable/karla": "^5.0.13",
+    "@nuxt/devtools": "^1.0.8",
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "nuxt": "3.6.5"
+  },
+  "scripts": {
+    "prepare": "nuxi prepare",
+    "dev": "nuxi dev --open",
+    "build": "nuxi build",
+    "generate": "nuxi generate",
+    "clean": "rimraf .nuxt .output node_modules"
+  },
+  "dependencies": {
+    "@nuxt/devtools-kit": "^1.0.6",
+    "@pinia/nuxt": "^0.5.1",
+    "@tinymce/tinymce-vue": "^6.0.1",
+    "@vueup/vue-quill": "^1.2.0",
+    "nuxi": "^3.10.0",
+    "tinymce": "^7.2.0"
+  }
+}

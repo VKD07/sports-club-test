@@ -1,0 +1,66 @@
+{
+  "countries": [
+    {
+      "name": "Abu Dhabi",
+      "region": "Middle East",
+      "cities": [
+        "Abu Dhabi",
+        "Al Ain",
+        "Madinat Zayed",
+        "Ruwais",
+        "Liwa Oasis",
+        "Ghantoot",
+        "Al Dhafra",
+        "Al Wathba",
+        "Al Mirfa",
+        "Baniyas",
+        "Al Samha",
+        "Mussafah",
+        "Shahama"
+      ]
+    },
+    {
+      "name": "Dubai",
+      "region": "Middle East",
+      "cities": [
+        "Dubai",
+        "Jebel Ali",
+        "Hatta",
+        "Al Awir",
+        "Al Khawaneej",
+        "Al Lisaili",
+        "Margham",
+        "Mushrif",
+        "Nazwah",
+        "Warsan",
+        "Lehbab"
+      ]
+    },
+    {
+      "name": "Nigeria",
+      "region": "Africa",
+      "cities": [
+        "Lagos",
+        "Abuja",
+        "Kano",
+        "Ibadan",
+        "Port Harcourt",
+        "Benin City",
+        "Maiduguri",
+        "Zaria",
+        "Jos",
+        "Ilorin",
+        "Enugu",
+        "Abeokuta",
+        "Onitsha",
+        "Warri",
+        "Sokoto",
+        "Kaduna",
+        "Owerri",
+        "Calabar",
+        "Uyo",
+        "Osogbo"
+      ]
+    }
+  ]
+}
